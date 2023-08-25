@@ -1,0 +1,110 @@
+<script type="text/javascript">
+	RED.nodes.registerType('edgepi-adc-node',{
+		category: 'Osensa EdgePi',
+		color: '#a6bbcf',
+		defaults: {
+		name: {value: ""},
+    transport: { value: "Local" },
+    tcpAddress: { value: "" },
+    tcpPort: { value: "" },
+  	},
+		inputs:1,
+		outputs:1,
+	  icon: "arrow.svg",
+		label: function() {
+			return this.name||"adc-node";
+    },
+    oneditprepare: function(){
+      // Query html elements
+      const configTransportSelect = document.getElementById("node-input-transport");
+      const tcpField = document.querySelector(".form-row.tcp")
+
+      function updateEditor(){
+				tcpField.style.display = (configTransportSelect.value === "Network") ? "flex" : "none";
+        voltageFormRow.style.display = (methodSelect.value === "write") ? "flex" : "none";
+      }
+
+      // Update and add event listener to update on user input
+      updateEditor()
+      configTransportSelect.addEventListener("change", updateEditor);
+  }
+	});
+</script>
+<script type="text/html" data-template-name="edgepi-adc-node">
+
+    <style>
+      *{
+          box-sizing: border-box !important;
+      }
+
+      .form-row{
+          display: flex;
+          align-items: center;
+      }
+
+      .form-row>label{
+          margin-top: auto; margin-bottom: auto;
+      }
+
+      .form-row.tcp {
+          flex-direction: row;
+          align-items: center;
+          margin-top: -5px; margin-bottom: 10px;
+      }
+
+      .tcp-address-input{
+          width: 110px !important;
+          margin-left: 100px !important;
+      }
+      .tcp-port-input{
+          width: 60px !important;
+      }
+
+      .tcp-port-label{
+          width: 5px !important;
+          margin: auto 5px;
+      }
+
+  </style>
+
+	<div class="form-row name">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>	
+  <div class="form-row transport">
+    <label for="node-input-transport">Rpc Server:</label>
+    <select id="node-input-transport">
+      <option value="Local">Local</option>
+      <option value="Network">Network</option>
+    </select>
+  </div>
+  <div class="form-row tcp" >
+    <input class="tcp-address-input" type="text" id="node-input-tcpAddress" placeholder="IP Address">
+    <label class="tcp-port-label" for="node-input-tcpPort">:</label>
+    <input class="tcp-port-input" type="text" id="node-input-tcpPort" placeholder="Port">
+  </div>
+</script>
+
+
+<script type="text/html" data-help-name="edgepi-adc-node">
+	<p>EdgePi ADC node that reads voltage...</p>
+	<h3>Properties</h3>
+	<dl class="message-properties">
+		<dt> RPC Server</dt>
+		<dd>The connection to your EdgePi's RPC Server. </dd>	
+	</dl>
+	<h3>Inputs</h3>
+		<dl class="message-properties">
+			Any message can be used to trigger this node.
+		</dl>
+	<h3>Outputs</h3>
+  <p>				</p>
+  <dl class="message-properties">
+    <dt> 	<span class="property-type">	</span></dt>
+    <dd>	</dd>
+  </dl>
+	<h3>References</h3>
+		<ul>
+			<li><a href="https://github.com/edgepi-cloud/node-red-edgepi-adc">GitHub</a> -the node's github repository </li>
+		</ul>
+</script>
