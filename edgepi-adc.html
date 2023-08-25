@@ -7,6 +7,9 @@
     transport: { value: "Local" },
     tcpAddress: { value: "" },
     tcpPort: { value: "" },
+		read: { value: "voltage" },
+    adc: { value: "ADC1"},
+		channel: { value: "AIN1"},
   	},
 		inputs:1,
 		outputs:1,
@@ -18,15 +21,27 @@
       // Query html elements
       const configTransportSelect = document.getElementById("node-input-transport");
       const tcpField = document.querySelector(".form-row.tcp")
+			const read = document.getElementById("node-input-read");
+      const adcOptions = document.getElementById("node-input-adc");
+			const adc1 = document.getElementById("adc-option-adc1");
+			const channelField = document.querySelector(".form-row.channel");
 
       function updateEditor(){
 				tcpField.style.display = (configTransportSelect.value === "Network") ? "flex" : "none";
-        voltageFormRow.style.display = (methodSelect.value === "write") ? "flex" : "none";
+				channelField.style.display = (read.value === "voltage") ? "flex" : "none";
+				if (read.value === "RTD") {
+          adcOptions.value = "ADC2";
+					adc1.setAttribute('disabled',true);
+				} else {
+					adc1.removeAttribute('disabled',true);
+				}
+				
       }
 
       // Update and add event listener to update on user input
       updateEditor()
       configTransportSelect.addEventListener("change", updateEditor);
+			read.addEventListener("change", updateEditor);
   }
 	});
 </script>
@@ -83,6 +98,34 @@
     <label class="tcp-port-label" for="node-input-tcpPort">:</label>
     <input class="tcp-port-input" type="text" id="node-input-tcpPort" placeholder="Port">
   </div>
+	<div class="form-row read">
+		<label for="node-input-read">Read:</label>
+		<select id="node-input-read">
+			<option value="voltage">Voltage</option>
+			<option value="differential">Differential</option>
+			<option value="RTD">RTD</option>
+		</select>
+	</div>
+	<div class="form-row adc">
+		<label for="node-input-adc">ADC:</label>
+		<select id="node-input-adc">
+			<option value="ADC1" id="adc-option-adc1">ADC1</option>
+			<option value="ADC2">ADC2</option>
+		</select>
+	</div>
+	<div class="form-row channel">
+		<label for="node-input-channel">Channel:</label>
+    <select id="node-input-channel">
+      <option value="AIN1">A-IN1</option>
+      <option value="AIN2">A-IN2</option>
+      <option value="AIN3">A-IN3</option>
+      <option value="AIN4">A-IN4</option>
+      <option value="AIN5">A-IN5</option>
+      <option value="AIN6">A-IN6</option>
+      <option value="AIN7">A-IN7</option>
+      <option value="AIN8">A-IN8</option>
+    </select>
+	</div>
 </script>
 
 
