@@ -1,0 +1,35 @@
+{
+    "name": "@edgepi-cloud/node-red-edgepi-adc",
+    "node-red": {
+      "nodes": {
+        "edgepi-dac": "edgepi-adc.js"
+      }
+    },
+    "version": "1.0.0",
+    "description": "node-red node for edgepi digital output module utilizing remote procedure calls",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/EdgePi-Cloud/node-red-edgepi-adc.git"
+    },
+    "keywords": [
+      "node-red",
+      "edgepi",
+      "rpc"
+    ],
+    "author": "Isaac James",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/EdgePi-Cloud/node-red-edgepi-dac/issues"
+    },
+    "homepage": "https://github.com/EdgePi-Cloud/node-red-edgepi-dac#readme",
+    "dependencies": {
+      "@edgepi-cloud/edgepi-rpc": "^1.0.6"
+    },
+    "devDependencies": {
+      "node-red": "^3.0.2"
+    }
+  }
