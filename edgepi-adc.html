@@ -9,6 +9,8 @@
     tcpPort: { value: "" },
 		read: { value: "voltage" },
     adc: { value: "ADC1"},
+    adc1DataRate: { value: "SPS_38400"},
+    adc2DataRate: { value: "SPS_800"},
 		channel: { value: "AIN1"},
   	},
 		inputs:1,
@@ -24,24 +26,29 @@
 			const read = document.getElementById("node-input-read");
       const adcOptions = document.getElementById("node-input-adc");
 			const adc1 = document.getElementById("adc-option-adc1");
+      const adc1DataRate = document.getElementById("node-input-adc1DataRate");
+      const adc2DataRate = document.getElementById("node-input-adc2DataRate");
 			const channelField = document.querySelector(".form-row.channel");
 
       function updateEditor(){
 				tcpField.style.display = (configTransportSelect.value === "Network") ? "flex" : "none";
 				channelField.style.display = (read.value === "voltage") ? "flex" : "none";
+        adc1DataRate.style.display = (adcOptions.value === "ADC1") ? "flex" : "none";
+        adc2DataRate.style.display = (adcOptions.value === "ADC2") ? "flex" : "none";
+  
 				if (read.value === "RTD") {
           adcOptions.value = "ADC2";
 					adc1.setAttribute('disabled',true);
 				} else {
 					adc1.removeAttribute('disabled',true);
 				}
-				
       }
 
       // Update and add event listener to update on user input
       updateEditor()
       configTransportSelect.addEventListener("change", updateEditor);
 			read.addEventListener("change", updateEditor);
+      adcOptions.addEventListener("change", updateEditor)
   }
 	});
 </script>
@@ -113,6 +120,33 @@
 			<option value="ADC2">ADC2</option>
 		</select>
 	</div>
+  <div class="form-row adc1-data-rate">
+    <label for="node-input-adc1DataRate">Data Rate:</label>
+    <select id="node-input-adc1DataRate">
+      <option value="SPS_2P5">2.5 S/s</option>
+      <option value="SPS_5">5 S/s</option>
+      <option value="SPS_10">10 S/s</option>
+      <option value="SPS_16P6">16.6 S/s</option>
+      <option value="SPS_20">20 S/s</option>
+      <option value="SPS_50">50 S/s</option>
+      <option value="SPS_60">60 S/s</option>
+      <option value="SPS_100">100 S/s</option>
+      <option value="SPS_400">400 S/s</option>
+      <option value="SPS_1200">1200 S/s</option>
+      <option value="SPS_2400">2400 S/s</option>
+      <option value="SPS_4800">4800 S/s</option>
+      <option value="SPS_7200">7200 S/s</option>
+      <option value="SPS_14400">14400 S/s</option>
+      <option value="SPS_19200">19200 S/s</option>
+      <option value="SPS_38400">38400 S/s</option>
+    </select>
+    <select id="node-input-adc2DataRate">
+      <option value="SPS_10">10 S/s</option>
+      <option value="SPS_100">100 S/s</option>
+      <option value="SPS_400">400 S/s</option>
+      <option value="SPS_800">800 S/s</option>
+    </select>
+  </div>
 	<div class="form-row channel">
 		<label for="node-input-channel">Channel:</label>
     <select id="node-input-channel">
