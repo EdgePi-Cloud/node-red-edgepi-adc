@@ -48,11 +48,7 @@ module.exports = function (RED) {
           done();
         }
       });
-  
-      node.on('close', (done) => {
-        node.status({ fill: 'grey', shape: 'ring', text: 'dac node terminated' });
-        done();
-      });
+
     }
     
     RED.nodes.registerType('edgepi-adc-node', AdcNode);
