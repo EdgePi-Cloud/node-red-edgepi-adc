@@ -16,12 +16,24 @@ module.exports = function (RED) {
         console.info("ADC node initialized on:", transport);
         node.status({fill:"green", shape:"ring", text:"adc initialized"});
       }
-  
+
+      // Do Configs based off
+      if(config.read === "voltage"){
+        const adcConfigArg = {
+          [(config.adc === "ADC1") ? "adc_1AnalogIn" : "adc_2AnalogIn"]: rpc.AnalogIn[config.channel]
+        };
+        adc.setConfig({...adcConfigArg, adc_1DataRate: rpc.ADC1DataRate.SPS_38400})
+      }
+      
       // Input event listener
       node.on('input', async function(msg,send,done){
         node.status({fill:"green", shape:"dot", text:"input recieved"});
         try{
           let response;
+          if(config.read === "voltage"){
+            response = await adc.singleSample();
+          }
+
           msg.payload = response;
         }
         catch(error){
