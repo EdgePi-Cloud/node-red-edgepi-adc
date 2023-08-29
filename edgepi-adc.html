@@ -8,10 +8,11 @@
     tcpAddress: { value: "" },
     tcpPort: { value: "" },
 		read: { value: "voltage" },
-    adc: { value: "ADC1"},
+    adc: { value: "ADC_1"},
     adc1DataRate: { value: "SPS_38400"},
     adc2DataRate: { value: "SPS_800"},
 		channel: { value: "AIN1"},
+    diff: { value: "DIFF_1"}
   	},
 		inputs:1,
 		outputs:1,
@@ -22,22 +23,26 @@
     oneditprepare: function(){
       // Query html elements
       const configTransportSelect = document.getElementById("node-input-transport");
-      const tcpField = document.querySelector(".form-row.tcp")
+      const tcpField = document.querySelector(".form-row.tcp");
 			const read = document.getElementById("node-input-read");
       const adcOptions = document.getElementById("node-input-adc");
 			const adc1 = document.getElementById("adc-option-adc1");
+      const dataRateField = document.querySelector(".form-row.data-rate")
       const adc1DataRate = document.getElementById("node-input-adc1DataRate");
       const adc2DataRate = document.getElementById("node-input-adc2DataRate");
 			const channelField = document.querySelector(".form-row.channel");
+      const diffField = document.querySelector(".form-row.diff");
 
       function updateEditor(){
 				tcpField.style.display = (configTransportSelect.value === "Network") ? "flex" : "none";
 				channelField.style.display = (read.value === "voltage") ? "flex" : "none";
-        adc1DataRate.style.display = (adcOptions.value === "ADC1") ? "flex" : "none";
-        adc2DataRate.style.display = (adcOptions.value === "ADC2") ? "flex" : "none";
+        dataRateField.style.display = (read.value === "voltage") ? "flex": "none";
+        diffField.style.display = (read.value === "differential") ? "flex" : "none";
+        adc1DataRate.style.display = (adcOptions.value === "ADC_1") ? "flex" : "none";
+        adc2DataRate.style.display = (adcOptions.value === "ADC_2") ? "flex" : "none";
   
 				if (read.value === "RTD") {
-          adcOptions.value = "ADC2";
+          adcOptions.value = "ADC_2";
 					adc1.setAttribute('disabled',true);
 				} else {
 					adc1.removeAttribute('disabled',true);
@@ -116,11 +121,11 @@
 	<div class="form-row adc">
 		<label for="node-input-adc">ADC:</label>
 		<select id="node-input-adc">
-			<option value="ADC1" id="adc-option-adc1">ADC1</option>
-			<option value="ADC2">ADC2</option>
+			<option value="ADC_1" id="adc-option-adc1">ADC1</option>
+			<option value="ADC_2">ADC2</option>
 		</select>
 	</div>
-  <div class="form-row adc1-data-rate">
+  <div class="form-row data-rate">
     <label for="node-input-adc1DataRate">Data Rate:</label>
     <select id="node-input-adc1DataRate">
       <option value="SPS_2P5">2.5 S/s</option>
@@ -160,27 +165,84 @@
       <option value="AIN8">A-IN8</option>
     </select>
 	</div>
+  <div class="form-row diff">
+		<label for="node-input-diff">Differential:</label>
+    <select id="node-input-diff">
+      <option value="DIFF_1">DIFF 1</option>
+      <option value="DIFF_2">DIFF 2</option>
+      <option value="DIFF_3">DIFF 3</option>
+      <option value="DIFF_4">DIFF 4</option>
+    </select>
+	</div>
 </script>
 
 
 <script type="text/html" data-help-name="edgepi-adc-node">
-	<p>EdgePi ADC node that reads voltage...</p>
+	<p>EdgePi ADC node that reads voltage, differential and RTD.</p>
+  <h3>Details</h3>
+    <p>Differential Types:</p>
+    <ul>
+      <li>DIFF1: Ports 16 & 17</li>
+      <li>DIFF1: Ports 19 & 20</li>
+      <li>DIFF1: Ports 21 & 22</li>
+      <li>DIFF1: Ports 24 & 25</li>
+    </ul>
+    <p>Assigned ports for RTD measurements:</p>
+    <ul>
+      <li>21</li>
+      <li>24</li>
+      <li>24</li>
+    </ul>
+    <p>NOTE: Port 22 will also be disabled</p>
 	<h3>Properties</h3>
 	<dl class="message-properties">
-		<dt> RPC Server</dt>
+		<dt>RPC Server</dt>
 		<dd>The connection to your EdgePi's RPC Server. </dd>	
+	</dl>
+  <dl class="message-properties">
+		<dt>Reading</dt>
+		<dd>The type of reading you want the ADC to do next.</dd>	
+	</dl>
+  <dl class="message-properties">
+		<dt>ADC</dt>
+		<dd>Which ADC you want to use for the next reading.</dd>	
+	</dl>
+  <dl class="message-properties">
+    <p>• When configured to read voltage:</p>
+		<dt>ADC Channel</dt>
+		<dd>Which analog channel you read from next.</dd>	
+	</dl>
+  <dl class="message-properties">
+    <p>• When configured to read voltage:</p>
+		<dt>Data Rate</dt>
+		<dd>The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.</dd>	
+	</dl>
+  <dl class="message-properties">
+    <p>• When configured to read differential:</p>
+		<dt>Differential</dt>
+		<dd>The differential you want to read next.</dd>	
 	</dl>
 	<h3>Inputs</h3>
 		<dl class="message-properties">
 			Any message can be used to trigger this node.
 		</dl>
-	<h3>Outputs</h3>
-  <p>				</p>
-  <dl class="message-properties">
-    <dt> 	<span class="property-type">	</span></dt>
-    <dd>	</dd>
-  </dl>
-	<h3>References</h3>
+    <h3>Outputs</h3>
+		<p>• When configured to read voltage</p>
+		<dl class="message-properties">
+			<dt>payload <span class="property-type">number</span></dt>
+			<dd>Voltage reading of the specified analog input channel.</dd>
+		</dl>
+		<p>• When configured to read differential:</p>
+		<dl class="message-properties">
+			<dt>payload <span class="property-type">number</span></dt>
+			<dd>Voltage reading of the specified differential.</dd>
+		</dl>
+		<p>• When configured to read RTD:</p>
+		<dl class="message-properties">
+			<dt>payload <span class="property-type">number</span></dt>
+			<dd>RTD temperature reading.</dd>
+		</dl>
+    <h3>References</h3>
 		<ul>
 			<li><a href="https://github.com/edgepi-cloud/node-red-edgepi-adc">GitHub</a> -the node's github repository </li>
 		</ul>
