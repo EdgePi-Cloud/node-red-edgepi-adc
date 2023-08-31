@@ -12,11 +12,11 @@
     adc1DataRate: { value: "SPS_38400"},
     adc2DataRate: { value: "SPS_800"},
 		channel: { value: "AIN1"},
-    diff: { value: "DIFF_1"}
+    diff: { value: "DIFF_1"},
   	},
 		inputs:1,
 		outputs:1,
-	  icon: "arrow.svg",
+	  icon: "right-arrow-bracket.svg",
 		label: function() {
 			return this.name||"adc-node";
     },
@@ -48,7 +48,6 @@
 					adc1.removeAttribute('disabled',true);
 				}
       }
-
       // Update and add event listener to update on user input
       updateEditor()
       configTransportSelect.addEventListener("change", updateEditor);
