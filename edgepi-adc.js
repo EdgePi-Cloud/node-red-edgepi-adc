@@ -1,5 +1,6 @@
-module.exports = function (RED) {
+module.exports = async function (RED) {
     const rpc = require('@edgepi-cloud/edgepi-rpc');
+    const { performAsyncConfigurations} = require('./helpers/nodeHelpers');
   
     function AdcNode(config) {
       // Create new node instance with user config
@@ -8,7 +9,8 @@ module.exports = function (RED) {
       const ipc_transport = "ipc:///tmp/edgepi.pipe"
       const tcp_transport = `tcp://${config.tcpAddress}:${config.tcpPort}`
       const transport = (config.transport === "Network") ? tcp_transport : ipc_transport;
-      
+
+
       // Init adc
       const adc = new rpc.AdcService(transport)
   
@@ -16,47 +18,52 @@ module.exports = function (RED) {
         console.info("ADC node initialized on:", transport);
         node.status({fill:"green", shape:"ring", text:"adc initialized"});
       }
-
-      // Enforce continuous conversion mode
-      adc.setConfig({conversionMode:rpc.ConvMode.CONTINUOUS})
-
-      // Do Configs based off input
-      if(config.read === "voltage"){
-        const adcConfigArg = {
-          [(config.adc === "ADC_1") ? "adc_1AnalogIn" : "adc_2AnalogIn"]: rpc.AnalogIn[config.channel]
-        };
-        adc.setConfig({...adcConfigArg, adc_1DataRate: rpc.ADC1DataRate.SPS_38400})
+      else{
+        node.status({fill:"red", shape:"ring", text:"adc failed to initialize"});
+        throw new Error("ADC failed to initialize.")
       }
-      if(config.read === "differential"){
-        const adc = rpc.ADCNum[config.adc]
-        const diff = rpc.DiffMode[config.diff]
-        adc.selectDifferential(adc, diff)
-      }
-      
-      // Input event listener
-      node.on('input', async function(msg,send,done){
-        node.status({fill:"green", shape:"dot", text:"input recieved"});
-        try{
-          let response;
-          if(config.read === "voltage" || config.read === "differential"){
-            response = await adc.readVoltage();
+
+      // Perform async configurations
+      performAsyncConfigurations(adc,config).then( () => {
+
+        // Input event listener
+        node.on('input', async function(msg,send,done){
+          node.status({fill:"green", shape:"dot", text:"input recieved"});
+          try{
+            let response;
+            if(config.read === "voltage" || config.read === "differential"){
+              response = await adc.readVoltage(rpc.ADCNum[config.adc]);
+            }
+            else if(config.read === "RTD") {
+              response = await adc.readRtdTemperature();
+              
+            }
+
+            msg.payload = response;
           }
+          catch(error){
+            msg.payload = error;
+            console.error(error)
+          }
+          
+          // Send msg
+          send(msg)
+          
+          if (done) {
+            done();
+          }
+        });
 
-          msg.payload = response;
-        }
-        catch(error){
-          msg.payload = error;
-          console.error(error)
-        }
-        
-        // Send msg
-        send(msg)
-        
-        if (done) {
-          done();
-        }
-      });
+        node.on('close', async () => {
+          await adc.stopConversions(false, rpc.ADCNum[config.adc])
+          await adc.setRtd(false, rpc.ADCNum.ADC_2)
+        })
 
+      })
+      .catch(error => {
+        console.error(error)
+      })
+      
     }
     
     RED.nodes.registerType('edgepi-adc-node', AdcNode);
