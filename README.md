@@ -50,3 +50,6 @@ The differential you want to read next.
   - `payload` (*number*)<br>
   RTD temperature reading.
 
+
+**NOTE:** Currently, EdgePi nodes are only available on x86 systems.
+
