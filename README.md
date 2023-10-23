@@ -15,7 +15,7 @@ Assigned ports for RTD measurements:
 
 - 21
 - 24
-- 24
+- 25
 
 **NOTE:** Port 22 will also be disabled.
 

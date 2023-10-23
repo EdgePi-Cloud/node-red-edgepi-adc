@@ -66,6 +66,6 @@ module.exports = async function (RED) {
       
     }
     
-    RED.nodes.registerType('edgepi-adc-node', AdcNode);
+    RED.nodes.registerType('adc', AdcNode);
     
   };
