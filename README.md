@@ -15,7 +15,7 @@ Assigned ports for RTD measurements:
 
 - 21
 - 24
-- 24
+- 25
 
 **NOTE:** Port 22 will also be disabled.
 
@@ -49,4 +49,7 @@ The differential you want to read next.
 - When configured to read RTD:
   - `payload` (*number*)<br>
   RTD temperature reading.
+
+
+**NOTE:** Currently, EdgePi nodes are only available on x86 systems.
 

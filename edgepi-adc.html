@@ -1,7 +1,7 @@
 <script type="text/javascript">
-	RED.nodes.registerType('edgepi-adc-node',{
-		category: 'Osensa EdgePi',
-		color: '#a6bbcf',
+	RED.nodes.registerType('adc',{
+		category: 'EdgePi',
+		color: '#f391aa',
 		defaults: {
 		name: {value: ""},
     transport: { value: "Local" },
@@ -18,7 +18,7 @@
 		outputs:1,
 	  icon: "right-arrow-bracket.svg",
 		label: function() {
-			return this.name||"adc-node";
+			return this.name||"adc";
     },
     oneditprepare: function(){
       // Query html elements
@@ -40,12 +40,12 @@
         diffField.style.display = (read.value === "differential") ? "flex" : "none";
         adc1DataRate.style.display = (adcOptions.value === "ADC_1") ? "flex" : "none";
         adc2DataRate.style.display = (adcOptions.value === "ADC_2") ? "flex" : "none";
-  
+
 				if (read.value === "RTD") {
           adcOptions.value = "ADC_2";
-					adc1.setAttribute('disabled',true);
+          adcOptions.setAttribute('disabled', true);
 				} else {
-					adc1.removeAttribute('disabled',true);
+          adcOptions.removeAttribute('disabled');
 				}
       }
       // Update and add event listener to update on user input
@@ -56,7 +56,7 @@
   }
 	});
 </script>
-<script type="text/html" data-template-name="edgepi-adc-node">
+<script type="text/html" data-template-name="adc">
 
     <style>
       *{
@@ -79,7 +79,7 @@
       }
 
       .tcp-address-input{
-          width: 110px !important;
+          width: 160px !important;
           margin-left: 100px !important;
       }
       .tcp-port-input{
@@ -94,18 +94,18 @@
   </style>
 
 	<div class="form-row name">
-		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name:</label>
 		<input type="text" id="node-input-name" placeholder="Name">
 	</div>	
   <div class="form-row transport">
-    <label for="node-input-transport">Rpc Server:</label>
+    <label for="node-input-transport">RPC Server:</label>
     <select id="node-input-transport">
       <option value="Local">Local</option>
       <option value="Network">Network</option>
     </select>
   </div>
   <div class="form-row tcp" >
-    <input class="tcp-address-input" type="text" id="node-input-tcpAddress" placeholder="IP Address">
+    <input class="tcp-address-input" type="text" id="node-input-tcpAddress" placeholder="IP Address/ Hostname">
     <label class="tcp-port-label" for="node-input-tcpPort">:</label>
     <input class="tcp-port-input" type="text" id="node-input-tcpPort" placeholder="Port">
   </div>
@@ -176,21 +176,24 @@
 </script>
 
 
-<script type="text/html" data-help-name="edgepi-adc-node">
-	<p>EdgePi ADC node that reads voltage, differential and RTD.</p>
+<script type="text/html" data-help-name="adc">
+	<p>Reads an analog measurement from a set of input channels on the EdgePi.  
+    The measurement can be configured to be either a voltage, differential or  
+    RTD temperature reading.
+  </p>
   <h3>Details</h3>
     <p>Differential Types:</p>
     <ul>
       <li>DIFF1: Ports 16 & 17</li>
-      <li>DIFF1: Ports 19 & 20</li>
-      <li>DIFF1: Ports 21 & 22</li>
-      <li>DIFF1: Ports 24 & 25</li>
+      <li>DIFF2: Ports 19 & 20</li>
+      <li>DIFF3: Ports 21 & 22</li>
+      <li>DIFF4: Ports 24 & 25</li>
     </ul>
     <p>Assigned ports for RTD measurements:</p>
     <ul>
       <li>21</li>
       <li>24</li>
-      <li>24</li>
+      <li>25</li>
     </ul>
     <p>NOTE: Port 22 will also be disabled</p>
 	<h3>Properties</h3>
