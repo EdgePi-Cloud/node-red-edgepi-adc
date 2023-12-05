@@ -30,6 +30,6 @@
         "node-red": "^3.0.2"
     },
     "dependencies": {
-        "@edgepi-cloud/edgepi-rpc": "^1.0.10"
+        "@edgepi-cloud/edgepi-rpc": "^1.0.11"
     }
 }
