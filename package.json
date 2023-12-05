@@ -5,7 +5,7 @@
             "edgepi-adc": "edgepi-adc.js"
         }
     },
-    "version": "1.0.6",
+    "version": "1.0.3",
     "description": "node-red node for edgepi adc module utilizing remote procedure calls",
     "main": "index.js",
     "scripts": {
@@ -30,6 +30,6 @@
         "node-red": "^3.0.2"
     },
     "dependencies": {
-        "@edgepi-cloud/edgepi-rpc": "^1.0.11"
+        "@edgepi-cloud/edgepi-rpc": "^1.0.10"
     }
 }
