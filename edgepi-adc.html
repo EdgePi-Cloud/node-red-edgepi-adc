@@ -1,102 +1,107 @@
 <script type="text/javascript">
-	RED.nodes.registerType('adc',{
-		category: 'EdgePi',
-		color: '#f391aa',
-		defaults: {
-		name: {value: ""},
-    transport: { value: "Local" },
-    tcpAddress: { value: "" },
-    tcpPort: { value: "" },
-		read: { value: "voltage" },
-    adc: { value: "ADC_1"},
-    adc1DataRate: { value: "SPS_38400"},
-    adc2DataRate: { value: "SPS_800"},
-		channel: { value: "AIN1"},
-    diff: { value: "DIFF_1"},
-  	},
-		inputs:1,
-		outputs:1,
-	  icon: "right-arrow-bracket.svg",
-		label: function() {
-			return this.name||"adc";
+  RED.nodes.registerType("adc", {
+    category: "EdgePi",
+    color: "#f391aa",
+    defaults: {
+      name: { value: "" },
+      transport: { value: "Local" },
+      tcpAddress: { value: "" },
+      tcpPort: { value: "" },
+      read: { value: "voltage" },
+      adcNum: { value: 1 },
+      adc1DataRate: { value: "SPS_38400" },
+      adc2DataRate: { value: "SPS_800" },
+      channel: { value: 1 },
+      diff: { value: 1 },
     },
-    oneditprepare: function(){
-      // Query html elements
-      const configTransportSelect = document.getElementById("node-input-transport");
+    inputs: 1,
+    outputs: 1,
+    icon: "right-arrow-bracket.svg",
+    label: function () {
+      return this.name || "adc";
+    },
+    oneditprepare: function () {
+      const configTransportSelect = document.getElementById(
+        "node-input-transport"
+      );
       const tcpField = document.querySelector(".form-row.tcp");
-			const read = document.getElementById("node-input-read");
+      const read = document.getElementById("node-input-read");
       const adcOptions = document.getElementById("node-input-adc");
-			const adc1 = document.getElementById("adc-option-adc1");
-      const dataRateField = document.querySelector(".form-row.data-rate")
+      const adc1 = document.getElementById("adc-option-adc1");
+      const dataRateField = document.querySelector(".form-row.data-rate");
       const adc1DataRate = document.getElementById("node-input-adc1DataRate");
       const adc2DataRate = document.getElementById("node-input-adc2DataRate");
-			const channelField = document.querySelector(".form-row.channel");
+      const channelField = document.querySelector(".form-row.channel");
       const diffField = document.querySelector(".form-row.diff");
 
-      function updateEditor(){
-				tcpField.style.display = (configTransportSelect.value === "Network") ? "flex" : "none";
-				channelField.style.display = (read.value === "voltage") ? "flex" : "none";
-        dataRateField.style.display = (read.value === "voltage") ? "flex": "none";
-        diffField.style.display = (read.value === "differential") ? "flex" : "none";
-        adc1DataRate.style.display = (adcOptions.value === "ADC_1") ? "flex" : "none";
-        adc2DataRate.style.display = (adcOptions.value === "ADC_2") ? "flex" : "none";
+      function updateEditor() {
+        tcpField.style.display =
+          configTransportSelect.value === "Network" ? "flex" : "none";
+        channelField.style.display = read.value === "voltage" ? "flex" : "none";
+        dataRateField.style.display =
+          read.value === "voltage" ? "flex" : "none";
+        diffField.style.display =
+          read.value === "differential" ? "flex" : "none";
+        adc1DataRate.style.display =
+          adcOptions.value === "ADC_1" ? "flex" : "none";
+        adc2DataRate.style.display =
+          adcOptions.value === "ADC_2" ? "flex" : "none";
 
-				if (read.value === "RTD") {
+        if (read.value === "RTD") {
           adcOptions.value = "ADC_2";
-          adcOptions.setAttribute('disabled', true);
-				} else {
-          adcOptions.removeAttribute('disabled');
-				}
+          adcOptions.setAttribute("disabled", true);
+        } else {
+          adcOptions.removeAttribute("disabled");
+        }
       }
-      // Update and add event listener to update on user input
-      updateEditor()
+      updateEditor();
       configTransportSelect.addEventListener("change", updateEditor);
-			read.addEventListener("change", updateEditor);
-      adcOptions.addEventListener("change", updateEditor)
-  }
-	});
+      read.addEventListener("change", updateEditor);
+      adcOptions.addEventListener("change", updateEditor);
+    },
+  });
 </script>
 <script type="text/html" data-template-name="adc">
+  <style>
+    * {
+      box-sizing: border-box !important;
+    }
 
-    <style>
-      *{
-          box-sizing: border-box !important;
-      }
+    .form-row {
+      display: flex;
+      align-items: center;
+    }
 
-      .form-row{
-          display: flex;
-          align-items: center;
-      }
+    .form-row > label {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
 
-      .form-row>label{
-          margin-top: auto; margin-bottom: auto;
-      }
+    .form-row.tcp {
+      flex-direction: row;
+      align-items: center;
+      margin-top: -5px;
+      margin-bottom: 10px;
+    }
 
-      .form-row.tcp {
-          flex-direction: row;
-          align-items: center;
-          margin-top: -5px; margin-bottom: 10px;
-      }
+    .tcp-address-input {
+      width: 160px !important;
+      margin-left: 100px !important;
+    }
+    .tcp-port-input {
+      width: 60px !important;
+    }
 
-      .tcp-address-input{
-          width: 160px !important;
-          margin-left: 100px !important;
-      }
-      .tcp-port-input{
-          width: 60px !important;
-      }
-
-      .tcp-port-label{
-          width: 5px !important;
-          margin: auto 5px;
-      }
-
+    .tcp-port-label {
+      width: 5px !important;
+      margin: auto 5px;
+    }
   </style>
 
-	<div class="form-row name">
-		<label for="node-input-name"><i class="fa fa-tag"></i> Name:</label>
-		<input type="text" id="node-input-name" placeholder="Name">
-	</div>	
+  <div class="form-row name">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name:</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
   <div class="form-row transport">
     <label for="node-input-transport">RPC Server:</label>
     <select id="node-input-transport">
@@ -104,26 +109,36 @@
       <option value="Network">Network</option>
     </select>
   </div>
-  <div class="form-row tcp" >
-    <input class="tcp-address-input" type="text" id="node-input-tcpAddress" placeholder="IP Address/ Hostname">
+  <div class="form-row tcp">
+    <input
+      class="tcp-address-input"
+      type="text"
+      id="node-input-tcpAddress"
+      placeholder="IP Address/ Hostname"
+    />
     <label class="tcp-port-label" for="node-input-tcpPort">:</label>
-    <input class="tcp-port-input" type="text" id="node-input-tcpPort" placeholder="Port">
+    <input
+      class="tcp-port-input"
+      type="text"
+      id="node-input-tcpPort"
+      placeholder="Port"
+    />
   </div>
-	<div class="form-row read">
-		<label for="node-input-read">Read:</label>
-		<select id="node-input-read">
-			<option value="voltage">Voltage</option>
-			<option value="differential">Differential</option>
-			<option value="RTD">RTD</option>
-		</select>
-	</div>
-	<div class="form-row adc">
-		<label for="node-input-adc">ADC:</label>
-		<select id="node-input-adc">
-			<option value="ADC_1" id="adc-option-adc1">ADC1</option>
-			<option value="ADC_2">ADC2</option>
-		</select>
-	</div>
+  <div class="form-row read">
+    <label for="node-input-read">Read:</label>
+    <select id="node-input-read">
+      <option value="voltage">Voltage</option>
+      <option value="differential">Differential</option>
+      <option value="RTD">RTD</option>
+    </select>
+  </div>
+  <div class="form-row adc">
+    <label for="node-input-adc">ADC:</label>
+    <select id="node-input-adc">
+      <option value="1" id="adc-option-adc1">ADC1</option>
+      <option value="2">ADC2</option>
+    </select>
+  </div>
   <div class="form-row data-rate">
     <label for="node-input-adc1DataRate">Data Rate:</label>
     <select id="node-input-adc1DataRate">
@@ -151,101 +166,107 @@
       <option value="SPS_800">800 S/s</option>
     </select>
   </div>
-	<div class="form-row channel">
-		<label for="node-input-channel">Channel:</label>
+  <div class="form-row channel">
+    <label for="node-input-channel">Channel:</label>
     <select id="node-input-channel">
-      <option value="AIN1">A-IN1</option>
-      <option value="AIN2">A-IN2</option>
-      <option value="AIN3">A-IN3</option>
-      <option value="AIN4">A-IN4</option>
-      <option value="AIN5">A-IN5</option>
-      <option value="AIN6">A-IN6</option>
-      <option value="AIN7">A-IN7</option>
-      <option value="AIN8">A-IN8</option>
+      <option value="1">A-IN1</option>
+      <option value="2">A-IN2</option>
+      <option value="3">A-IN3</option>
+      <option value="4">A-IN4</option>
+      <option value="5">A-IN5</option>
+      <option value="6">A-IN6</option>
+      <option value="7">A-IN7</option>
+      <option value="8">A-IN8</option>
     </select>
-	</div>
+  </div>
   <div class="form-row diff">
-		<label for="node-input-diff">Differential:</label>
+    <label for="node-input-diff">Differential:</label>
     <select id="node-input-diff">
-      <option value="DIFF_1">DIFF 1</option>
-      <option value="DIFF_2">DIFF 2</option>
-      <option value="DIFF_3">DIFF 3</option>
-      <option value="DIFF_4">DIFF 4</option>
+      <option value="1">DIFF 1</option>
+      <option value="2">DIFF 2</option>
+      <option value="3">DIFF 3</option>
+      <option value="4">DIFF 4</option>
     </select>
-	</div>
+  </div>
 </script>
 
-
 <script type="text/html" data-help-name="adc">
-	<p>Reads an analog measurement from a set of input channels on the EdgePi.  
-    The measurement can be configured to be either a voltage, differential or  
-    RTD temperature reading.
+  <p>
+    Reads an analog measurement from a set of input channels on the EdgePi. The
+    measurement can be configured to be either a voltage, differential or RTD
+    temperature reading.
   </p>
   <h3>Details</h3>
-    <p>Differential Types:</p>
-    <ul>
-      <li>DIFF1: Ports 16 & 17</li>
-      <li>DIFF2: Ports 19 & 20</li>
-      <li>DIFF3: Ports 21 & 22</li>
-      <li>DIFF4: Ports 24 & 25</li>
-    </ul>
-    <p>Assigned ports for RTD measurements:</p>
-    <ul>
-      <li>21</li>
-      <li>24</li>
-      <li>25</li>
-    </ul>
-    <p>NOTE: Port 22 will also be disabled</p>
-	<h3>Properties</h3>
-	<dl class="message-properties">
-		<dt>RPC Server</dt>
-		<dd>The connection to your EdgePi's RPC Server. </dd>	
-	</dl>
+  <p>Differential Types:</p>
+  <ul>
+    <li>DIFF1: Ports 16 & 17</li>
+    <li>DIFF2: Ports 19 & 20</li>
+    <li>DIFF3: Ports 21 & 22</li>
+    <li>DIFF4: Ports 24 & 25</li>
+  </ul>
+  <p>Assigned ports for RTD measurements:</p>
+  <ul>
+    <li>21</li>
+    <li>24</li>
+    <li>25</li>
+  </ul>
+  <p>NOTE: Port 22 will also be disabled</p>
+  <h3>Properties</h3>
   <dl class="message-properties">
-		<dt>Reading</dt>
-		<dd>The type of reading you want the ADC to do next.</dd>	
-	</dl>
+    <dt>RPC Server</dt>
+    <dd>The connection to your EdgePi's RPC Server.</dd>
+  </dl>
   <dl class="message-properties">
-		<dt>ADC</dt>
-		<dd>Which ADC you want to use for the next reading.</dd>	
-	</dl>
+    <dt>Reading</dt>
+    <dd>The type of reading you want the ADC to do next.</dd>
+  </dl>
   <dl class="message-properties">
-    <p>• When configured to read voltage:</p>
-		<dt>ADC Channel</dt>
-		<dd>Which analog channel you read from next.</dd>	
-	</dl>
+    <dt>ADC</dt>
+    <dd>Which ADC you want to use for the next reading.</dd>
+  </dl>
   <dl class="message-properties">
     <p>• When configured to read voltage:</p>
-		<dt>Data Rate</dt>
-		<dd>The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.</dd>	
-	</dl>
+    <dt>ADC Channel</dt>
+    <dd>Which analog channel you read from next.</dd>
+  </dl>
+  <dl class="message-properties">
+    <p>• When configured to read voltage:</p>
+    <dt>Data Rate</dt>
+    <dd>
+      The selected ADC's data rate. Note that data rates are different depending
+      on which ADC you chose.
+    </dd>
+  </dl>
   <dl class="message-properties">
     <p>• When configured to read differential:</p>
-		<dt>Differential</dt>
-		<dd>The differential you want to read next.</dd>	
-	</dl>
-	<h3>Inputs</h3>
-		<dl class="message-properties">
-			Any message can be used to trigger this node.
-		</dl>
-    <h3>Outputs</h3>
-		<p>• When configured to read voltage</p>
-		<dl class="message-properties">
-			<dt>payload <span class="property-type">number</span></dt>
-			<dd>Voltage reading of the specified analog input channel.</dd>
-		</dl>
-		<p>• When configured to read differential:</p>
-		<dl class="message-properties">
-			<dt>payload <span class="property-type">number</span></dt>
-			<dd>Voltage reading of the specified differential.</dd>
-		</dl>
-		<p>• When configured to read RTD:</p>
-		<dl class="message-properties">
-			<dt>payload <span class="property-type">number</span></dt>
-			<dd>RTD temperature reading.</dd>
-		</dl>
-    <h3>References</h3>
-		<ul>
-			<li><a href="https://github.com/edgepi-cloud/node-red-edgepi-adc">GitHub</a> -the node's github repository </li>
-		</ul>
+    <dt>Differential</dt>
+    <dd>The differential you want to read next.</dd>
+  </dl>
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    Any message can be used to trigger this node.
+  </dl>
+  <h3>Outputs</h3>
+  <p>• When configured to read voltage</p>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">number</span></dt>
+    <dd>Voltage reading of the specified analog input channel.</dd>
+  </dl>
+  <p>• When configured to read differential:</p>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">number</span></dt>
+    <dd>Voltage reading of the specified differential.</dd>
+  </dl>
+  <p>• When configured to read RTD:</p>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">number</span></dt>
+    <dd>RTD temperature reading.</dd>
+  </dl>
+  <h3>References</h3>
+  <ul>
+    <li>
+      <a href="https://github.com/edgepi-cloud/node-red-edgepi-adc">GitHub</a>
+      -the node's github repository
+    </li>
+  </ul>
 </script>
