@@ -9,8 +9,8 @@
       tcpPort: { value: "" },
       read: { value: "voltage" },
       adcNum: { value: 1 },
-      adc1DataRate: { value: "SPS_38400" },
-      adc2DataRate: { value: "SPS_800" },
+      adc1DataRate: { value: 38400 },
+      adc2DataRate: { value: 800 },
       channel: { value: 1 },
       diff: { value: 1 },
     },
@@ -26,7 +26,7 @@
       );
       const tcpField = document.querySelector(".form-row.tcp");
       const read = document.getElementById("node-input-read");
-      const adcOptions = document.getElementById("node-input-adc");
+      const adcNum = document.getElementById("node-input-adcNum");
       const adc1 = document.getElementById("adc-option-adc1");
       const dataRateField = document.querySelector(".form-row.data-rate");
       const adc1DataRate = document.getElementById("node-input-adc1DataRate");
@@ -42,22 +42,20 @@
           read.value === "voltage" ? "flex" : "none";
         diffField.style.display =
           read.value === "differential" ? "flex" : "none";
-        adc1DataRate.style.display =
-          adcOptions.value === "ADC_1" ? "flex" : "none";
-        adc2DataRate.style.display =
-          adcOptions.value === "ADC_2" ? "flex" : "none";
+        adc1DataRate.style.display = adcNum.value === "1" ? "flex" : "none";
+        adc2DataRate.style.display = adcNum.value === "2" ? "flex" : "none";
 
         if (read.value === "RTD") {
-          adcOptions.value = "ADC_2";
-          adcOptions.setAttribute("disabled", true);
+          adcNum.value = "2";
+          adcNum.setAttribute("disabled", true);
         } else {
-          adcOptions.removeAttribute("disabled");
+          adcNum.removeAttribute("disabled");
         }
       }
       updateEditor();
       configTransportSelect.addEventListener("change", updateEditor);
       read.addEventListener("change", updateEditor);
-      adcOptions.addEventListener("change", updateEditor);
+      adcNum.addEventListener("change", updateEditor);
     },
   });
 </script>
@@ -132,9 +130,9 @@
       <option value="RTD">RTD</option>
     </select>
   </div>
-  <div class="form-row adc">
-    <label for="node-input-adc">ADC:</label>
-    <select id="node-input-adc">
+  <div class="form-row adcNum">
+    <label for="node-input-adcNum">ADC:</label>
+    <select id="node-input-adcNum">
       <option value="1" id="adc-option-adc1">ADC1</option>
       <option value="2">ADC2</option>
     </select>
@@ -142,28 +140,28 @@
   <div class="form-row data-rate">
     <label for="node-input-adc1DataRate">Data Rate:</label>
     <select id="node-input-adc1DataRate">
-      <option value="SPS_2P5">2.5 S/s</option>
-      <option value="SPS_5">5 S/s</option>
-      <option value="SPS_10">10 S/s</option>
-      <option value="SPS_16P6">16.6 S/s</option>
-      <option value="SPS_20">20 S/s</option>
-      <option value="SPS_50">50 S/s</option>
-      <option value="SPS_60">60 S/s</option>
-      <option value="SPS_100">100 S/s</option>
-      <option value="SPS_400">400 S/s</option>
-      <option value="SPS_1200">1200 S/s</option>
-      <option value="SPS_2400">2400 S/s</option>
-      <option value="SPS_4800">4800 S/s</option>
-      <option value="SPS_7200">7200 S/s</option>
-      <option value="SPS_14400">14400 S/s</option>
-      <option value="SPS_19200">19200 S/s</option>
-      <option value="SPS_38400">38400 S/s</option>
+      <option value="2.5">2.5 S/s</option>
+      <option value="5">5 S/s</option>
+      <option value="10">10 S/s</option>
+      <option value="16P6">16.6 S/s</option>
+      <option value="20">20 S/s</option>
+      <option value="50">50 S/s</option>
+      <option value="60">60 S/s</option>
+      <option value="100">100 S/s</option>
+      <option value="400">400 S/s</option>
+      <option value="1200">1200 S/s</option>
+      <option value="2400">2400 S/s</option>
+      <option value="4800">4800 S/s</option>
+      <option value="7200">7200 S/s</option>
+      <option value="14400">14400 S/s</option>
+      <option value="19200">19200 S/s</option>
+      <option value="38400">38400 S/s</option>
     </select>
     <select id="node-input-adc2DataRate">
-      <option value="SPS_10">10 S/s</option>
-      <option value="SPS_100">100 S/s</option>
-      <option value="SPS_400">400 S/s</option>
-      <option value="SPS_800">800 S/s</option>
+      <option value="10">10 S/s</option>
+      <option value="100">100 S/s</option>
+      <option value="400">400 S/s</option>
+      <option value="800">800 S/s</option>
     </select>
   </div>
   <div class="form-row channel">
@@ -182,10 +180,10 @@
   <div class="form-row diff">
     <label for="node-input-diff">Differential:</label>
     <select id="node-input-diff">
-      <option value="1">DIFF 1</option>
-      <option value="2">DIFF 2</option>
-      <option value="3">DIFF 3</option>
-      <option value="4">DIFF 4</option>
+      <option value="1">DIFF1</option>
+      <option value="2">DIFF2</option>
+      <option value="3">DIFF3</option>
+      <option value="4">DIFF4</option>
     </select>
   </div>
 </script>
@@ -217,16 +215,16 @@
     <dd>The connection to your EdgePi's RPC Server.</dd>
   </dl>
   <dl class="message-properties">
-    <dt>Reading</dt>
-    <dd>The type of reading you want the ADC to do next.</dd>
+    <dt>Read</dt>
+    <dd>The type of read to complete.</dd>
   </dl>
   <dl class="message-properties">
     <dt>ADC</dt>
-    <dd>Which ADC you want to use for the next reading.</dd>
+    <dd>The ADC to use for the next read.</dd>
   </dl>
   <dl class="message-properties">
     <p>• When configured to read voltage:</p>
-    <dt>ADC Channel</dt>
+    <dt>Channel</dt>
     <dd>Which analog channel you read from next.</dd>
   </dl>
   <dl class="message-properties">
@@ -234,7 +232,7 @@
     <dt>Data Rate</dt>
     <dd>
       The selected ADC's data rate. Note that data rates are different depending
-      on which ADC you chose.
+      on the selected ADC.
     </dd>
   </dl>
   <dl class="message-properties">
@@ -243,8 +241,17 @@
     <dd>The differential you want to read next.</dd>
   </dl>
   <h3>Inputs</h3>
+  <dd>
+    Initial configurations set in the editor are applied once the node is
+    deployed. Configurations can then be dynamically set from input.
+  </dd>
   <dl class="message-properties">
-    Any message can be used to trigger this node.
+    dt>payload <span class="property-type">number</span></dt>
+    <dd>The input selection -- the channel or channel diff depending on the read type.</dd>
+    dt>read <span class="property-type">string</span></dt>
+    <dd>'voltage', 'differential', or 'rtd'.</dd>
+    dt>dataRate <span class="property-type">number</span></dt>
+    dt>adc <span class="property-type">number</span></dt>
   </dl>
   <h3>Outputs</h3>
   <p>• When configured to read voltage</p>
