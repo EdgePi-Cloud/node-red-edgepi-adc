@@ -22,34 +22,35 @@ Assigned ports for RTD measurements:
 ## Properties
 
 - **RPC Server:** <br>
-The connection to your EdgePi's RPC Server.
+  The connection to your EdgePi's RPC Server.
 - **Reading:** <br>
-The type of reading you want the ADC to do next.
+  The type of reading you want the ADC to do next.
 - **ADC:**<br>
-Which ADC you want to use for the next reading.
+  Which ADC you want to use for the next reading.
 - **ADC Channel (when configured to read voltage):**<br>
-Which analog channel you read from next.
+  Which analog channel you read from next.
 - **Data Rate (when configured to read voltage):**<br>
-The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.
+  The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.
 - **Differential (when configured to read differential):**<br>
-The differential you want to read next.
+  The differential you want to read next.
 
 ## Inputs
 
-- Any message can be used to trigger this node.
+- `payload` (_number_)<br>
+  The input selection -- the channel or channel diff depending on the read type.
+- `read` (_string_)<br>
+  'voltage', 'differential', or 'rtd'.
+- `dataRate` (_string_)<br>
+- `adc` (_string_)<br>
 
 ## Outputs
 
 - When configured to read voltage:
-  - `payload` (*number*)<br>
-  Voltage reading of the specified analog input channel.
+  - `payload` (_number_)<br>
+    Voltage reading of the specified analog input channel.
 - When configured to read differential:
-  - `payload` (*number*)<br>
-  Voltage reading of the specified differential.
+  - `payload` (_number_)<br>
+    Voltage reading of the specified differential.
 - When configured to read RTD:
-  - `payload` (*number*)<br>
-  RTD temperature reading.
-
-
-**NOTE:** Currently, EdgePi nodes are only available on x86 systems.
-
+  - `payload` (_number_)<br>
+    RTD temperature reading.
