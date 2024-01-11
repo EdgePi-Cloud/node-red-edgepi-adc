@@ -5,20 +5,19 @@ module.exports = async function (RED) {
     RED.nodes.createNode(this, config);
     const node = this;
     let read = config.read.toLowerCase();
-    let inputSelection = read === "voltage" ? config.channel : config.diff;
+    let inputSelection = read === "single" ? config.channel : config.diff;
     let adcNum = config.adcNum;
     let dataRate = adcNum === 1 ? config.adc1DataRate : config.adc2DataRate;
 
     initializeNode(config)
       .then((adc) => {
         node.on("input", async function (msg, send, done) {
-          node.status({ fill: "green", shape: "dot", text: "input recieved" });
+          node.status({ fill: "green", shape: "dot", text: "input received" });
           try {
-            read = msg.read ?? read;
-            adcNum = msg.adc ?? adcNum;
+            read = msg.readType || read; //prioritize the inputs in the msg
+            adcNum = msg.adc || adcNum;
             inputSelection = msg.payload || inputSelection;
-            dataRate = msg.dataRate ?? dataRate;
-
+            dataRate = msg.dataRate || dataRate;
             if (read !== "rtd") {
               await adc.setRtd(false, adcNum - 1);
             }
@@ -27,7 +26,7 @@ module.exports = async function (RED) {
             let response;
             if (read === "rtd") {
               response = await adc.readRtdTemperature();
-            } else if (read === "voltage" || read === "differential") {
+            } else if (read === "single" || read === "diff") {
               response = await adc.readVoltage(adcNum - 1);
             }
 
@@ -56,6 +55,7 @@ module.exports = async function (RED) {
           : "ipc:///tmp/edgepi.pipe";
       try {
         const adc = new rpc.AdcService(transport);
+
         console.info("ADC node initialized on:", transport);
         node.status({ fill: "green", shape: "ring", text: "adc initialized" });
         await setConfigurations(adc, config);
@@ -72,7 +72,7 @@ module.exports = async function (RED) {
     }
 
     async function setConfigurations(adc) {
-      if (read === "voltage") {
+      if (read === "single") {
         const dataRateStr = "SPS_" + dataRate.toString().replace(".", "P");
         const configArg = {
           [`adc_${adcNum}AnalogIn`]: inputSelection - 1,
@@ -80,7 +80,7 @@ module.exports = async function (RED) {
           conversionMode: rpc.ConvMode.CONTINUOUS,
         };
         await adc.setConfig(configArg);
-      } else if (read === "differential") {
+      } else if (read === "diff") {
         await adc.selectDifferential(adcNum - 1, inputSelection - 1);
       } else if (read === "rtd") {
         await adc.setRtd(true, adcNum - 1);

@@ -7,7 +7,7 @@
       transport: { value: "Local" },
       tcpAddress: { value: "" },
       tcpPort: { value: "" },
-      read: { value: "voltage" },
+      read: { value: "single" },
       adcNum: { value: 1 },
       adc1DataRate: { value: 38400 },
       adc2DataRate: { value: 800 },
@@ -37,15 +37,13 @@
       function updateEditor() {
         tcpField.style.display =
           configTransportSelect.value === "Network" ? "flex" : "none";
-        channelField.style.display = read.value === "voltage" ? "flex" : "none";
-        dataRateField.style.display =
-          read.value === "voltage" ? "flex" : "none";
-        diffField.style.display =
-          read.value === "differential" ? "flex" : "none";
+        channelField.style.display = read.value === "single" ? "flex" : "none";
+        dataRateField.style.display = read.value === "single" ? "flex" : "none";
+        diffField.style.display = read.value === "diff" ? "flex" : "none";
         adc1DataRate.style.display = adcNum.value === "1" ? "flex" : "none";
         adc2DataRate.style.display = adcNum.value === "2" ? "flex" : "none";
 
-        if (read.value === "RTD") {
+        if (read.value === "rtd") {
           adcNum.value = "2";
           adcNum.setAttribute("disabled", true);
         } else {
@@ -125,9 +123,9 @@
   <div class="form-row read">
     <label for="node-input-read">Read:</label>
     <select id="node-input-read">
-      <option value="voltage">Voltage</option>
-      <option value="differential">Differential</option>
-      <option value="RTD">RTD</option>
+      <option value="single">Single-ded</option>
+      <option value="diff">Differential</option>
+      <option value="rtd">RTD</option>
     </select>
   </div>
   <div class="form-row adcNum">

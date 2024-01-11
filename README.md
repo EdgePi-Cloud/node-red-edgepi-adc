@@ -36,12 +36,16 @@ Assigned ports for RTD measurements:
 
 ## Inputs
 
-- `payload` (_number_)<br>
-  The input selection -- the channel or channel diff depending on the read type.
-- `read` (_string_)<br>
-  'voltage', 'differential', or 'rtd'.
-- `dataRate` (_string_)<br>
-- `adc` (_string_)<br>
+- **payload** (_number_)<br>
+  The input selection -- the channel number (1 to 8) or differential channels number (1 to 4) depending on the read type. Ignored for read type `rtd`.
+- **readType** (_string_)<br>
+  `single`, `diff`, or `rtd`. Default is `single`.
+- **dataRate** (_number_)<br>
+  ADC data rate.
+  Valid values for ADC 1 . Default is `38400`.
+  Valid values for ADC 2 . Default is `800`.
+- **adc** (_number_)<br>
+  ADC number to use for reads. Valid values are **1** and **2**. Default is **1**.
 
 ## Outputs
 
