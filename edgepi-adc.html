@@ -123,7 +123,7 @@
   <div class="form-row read">
     <label for="node-input-read">Read:</label>
     <select id="node-input-read">
-      <option value="single">Single-ded</option>
+      <option value="single">Single-ended</option>
       <option value="diff">Differential</option>
       <option value="rtd">RTD</option>
     </select>
@@ -221,12 +221,12 @@
     <dd>The ADC to use for the next read.</dd>
   </dl>
   <dl class="message-properties">
-    <p>• When configured to read voltage:</p>
+    <p>• When configured to read single-ended:</p>
     <dt>Channel</dt>
     <dd>Which analog channel you read from next.</dd>
   </dl>
   <dl class="message-properties">
-    <p>• When configured to read voltage:</p>
+    <p>• When configured to read single-ended:</p>
     <dt>Data Rate</dt>
     <dd>
       The selected ADC's data rate. Note that data rates are different depending
@@ -244,28 +244,44 @@
     deployed. Configurations can then be dynamically set from input.
   </dd>
   <dl class="message-properties">
-    dt>payload <span class="property-type">number</span></dt>
-    <dd>The input selection -- the channel or channel diff depending on the read type.</dd>
-    dt>read <span class="property-type">string</span></dt>
-    <dd>'voltage', 'differential', or 'rtd'.</dd>
-    dt>dataRate <span class="property-type">number</span></dt>
-    dt>adc <span class="property-type">number</span></dt>
+    <dt>payload <span class="property-type">number</span></dt>
+    <dd>
+      The input selection -- the channel number (1 to 8) or differential
+      channels number (1 to 4) depending on the read type. Ignored for read type
+      rtd.
+    </dd>
+    <dt>readType <span class="property-type">string</span></dt>
+    <dd>
+      <strong>single</strong>, <strong>diff</strong>, or <strong>rtd</strong>.
+    </dd>
+    <dt>dataRate <span class="property-type">number</span></dt>
+    <dd>
+      ADC data rate. Default values: <strong>38400</strong> (ADC1) and
+      <strong>800</strong> (ADC2).
+    </dd>
+    <dt>adc <span class="property-type">number</span></dt>
+    <dd>
+      ADC number to use for reads. Valid values are <strong>1</strong> and
+      <strong>2</strong>. Default is <strong>1</strong>.
+    </dd>
   </dl>
   <h3>Outputs</h3>
-  <p>• When configured to read voltage</p>
+  <p>• Read type <strong>single</strong> :</p>
   <dl class="message-properties">
     <dt>payload <span class="property-type">number</span></dt>
-    <dd>Voltage reading of the specified analog input channel.</dd>
+    <dd>Voltage reading of the specified single-ended analog input channel.</dd>
   </dl>
-  <p>• When configured to read differential:</p>
+  <p>• Read type <strong>diff</strong> :</p>
   <dl class="message-properties">
     <dt>payload <span class="property-type">number</span></dt>
-    <dd>Voltage reading of the specified differential.</dd>
+    <dd>
+      Differential voltage reading of the specified differential channels.
+    </dd>
   </dl>
-  <p>• When configured to read RTD:</p>
+  <p>• Read type <strong>rtd</strong> :</p>
   <dl class="message-properties">
     <dt>payload <span class="property-type">number</span></dt>
-    <dd>RTD temperature reading.</dd>
+    <dd>RTD temperature reading in Celsius.</dd>
   </dl>
   <h3>References</h3>
   <ul>

@@ -49,12 +49,12 @@ Assigned ports for RTD measurements:
 
 ## Outputs
 
-- When configured to read voltage:
+- Read type `single`:
   - `payload` (_number_)<br>
-    Voltage reading of the specified analog input channel.
-- When configured to read differential:
+    Voltage reading of the specified single-ended analog input channel.
+- Read type `diff`:
   - `payload` (_number_)<br>
-    Voltage reading of the specified differential.
-- When configured to read RTD:
+    Differential voltage reading of the specified differential channels.
+- Read type `rtd`:
   - `payload` (_number_)<br>
-    RTD temperature reading.
+    RTD temperature reading in Celsius.
