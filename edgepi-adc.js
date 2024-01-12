@@ -83,6 +83,7 @@ module.exports = async function (RED) {
       } else if (read === "diff") {
         await adc.selectDifferential(adcNum - 1, inputSelection - 1);
       } else if (read === "rtd") {
+        adcNum = 2; // force adc to 2
         await adc.setRtd(true, adcNum - 1);
       }
     }

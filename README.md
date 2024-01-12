@@ -45,7 +45,7 @@ Assigned ports for RTD measurements:
   Valid values for ADC 1 . Default is `38400`.
   Valid values for ADC 2 . Default is `800`.
 - **adc** (_number_)<br>
-  ADC number to use for reads. Valid values are **1** and **2**. Default is **1**.
+  ADC number to use for reads. Valid values are **1** and **2**. Forced to **2** when RTD `readType` is `rtd`. Default is **1**.
 
 ## Outputs
 
