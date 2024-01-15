@@ -22,34 +22,39 @@ Assigned ports for RTD measurements:
 ## Properties
 
 - **RPC Server:** <br>
-The connection to your EdgePi's RPC Server.
+  The connection to your EdgePi's RPC Server.
 - **Reading:** <br>
-The type of reading you want the ADC to do next.
+  The type of reading you want the ADC to do next.
 - **ADC:**<br>
-Which ADC you want to use for the next reading.
+  Which ADC you want to use for the next reading.
 - **ADC Channel (when configured to read voltage):**<br>
-Which analog channel you read from next.
+  Which analog channel you read from next.
 - **Data Rate (when configured to read voltage):**<br>
-The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.
+  The selected ADC's data rate. Note that data rates are different depending on which ADC you chose.
 - **Differential (when configured to read differential):**<br>
-The differential you want to read next.
+  The differential you want to read next.
 
 ## Inputs
 
-- Any message can be used to trigger this node.
+- **payload** (_number_)<br>
+  The input selection -- the channel number (1 to 8) or differential channels number (1 to 4) depending on the read type. Ignored for read type `rtd`.
+- **readType** (_string_)<br>
+  `single`, `diff`, or `rtd`. Default is `single`.
+- **dataRate** (_number_)<br>
+  ADC data rate.
+  Valid values for ADC 1: [`2.5`, `5`, `10`, `16.6`, `20`, `50`, `60`, `100`, `400`, `1200`, `2400`, `4800`, `7200`, `14400`, `19200`, `38400`] . Default is `38400`.
+  Valid values for ADC 2: [`10`, `100`, `400`, `800`] . Default is `800`.
+- **adc** (_number_)<br>
+  ADC number to use for reads. Valid values are **1** and **2**. Forced to **2** when RTD `readType` is `rtd`. Default is **1**.
 
 ## Outputs
 
-- When configured to read voltage:
-  - `payload` (*number*)<br>
-  Voltage reading of the specified analog input channel.
-- When configured to read differential:
-  - `payload` (*number*)<br>
-  Voltage reading of the specified differential.
-- When configured to read RTD:
-  - `payload` (*number*)<br>
-  RTD temperature reading.
-
-
-**NOTE:** Currently, EdgePi nodes are only available on x86 systems.
-
+- Read type `single`:
+  - `payload` (_number_)<br>
+    Voltage reading of the specified single-ended analog input channel.
+- Read type `diff`:
+  - `payload` (_number_)<br>
+    Differential voltage reading of the specified differential channels.
+- Read type `rtd`:
+  - `payload` (_number_)<br>
+    RTD temperature reading in Celsius.
