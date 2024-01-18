@@ -16,12 +16,9 @@ module.exports = async function (RED) {
           try {
             read = msg.readType || read; //prioritize the inputs in the msg
             adcNum = msg.adc || adcNum;
-            inputSelection =
-              msg.payload && typeof msg.payload == "number"
-                ? msg.payload
-                : inputSelection;
-
+            inputSelection = msg.payload || inputSelection;
             dataRate = msg.dataRate || dataRate;
+
             if (read !== "rtd") {
               await adc.setRtd(false, adcNum - 1);
             }
