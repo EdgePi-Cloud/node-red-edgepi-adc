@@ -21,10 +21,8 @@
       return this.name || "adc";
     },
     oneditprepare: function () {
-      const configTransportSelect = document.getElementById(
-        "node-input-transport"
-      );
-      const tcpField = document.querySelector(".form-row.tcp");
+      const transportType = document.getElementById("node-input-transport");
+      const tcpTransportInputs = document.querySelector(".form-row.tcp");
       const read = document.getElementById("node-input-read");
       const adcNum = document.getElementById("node-input-adcNum");
       const adc1 = document.getElementById("adc-option-adc1");
@@ -35,8 +33,8 @@
       const diffField = document.querySelector(".form-row.diff");
 
       function updateEditor() {
-        tcpField.style.display =
-          configTransportSelect.value === "Network" ? "flex" : "none";
+        tcpTransportInputs.style.display =
+          transportType.value === "Network" ? "flex" : "none";
         channelField.style.display = read.value === "single" ? "flex" : "none";
         dataRateField.style.display = read.value === "single" ? "flex" : "none";
         diffField.style.display = read.value === "diff" ? "flex" : "none";
@@ -51,7 +49,7 @@
         }
       }
       updateEditor();
-      configTransportSelect.addEventListener("change", updateEditor);
+      transportType.addEventListener("change", updateEditor);
       read.addEventListener("change", updateEditor);
       adcNum.addEventListener("change", updateEditor);
     },
