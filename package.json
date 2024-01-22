@@ -5,7 +5,7 @@
             "edgepi-adc": "edgepi-adc.js"
         }
     },
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "node-red node for edgepi adc module utilizing remote procedure calls",
     "main": "index.js",
     "scripts": {
