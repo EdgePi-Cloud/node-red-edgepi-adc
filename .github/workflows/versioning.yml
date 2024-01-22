@@ -59,7 +59,6 @@ jobs:
           version=$(cat package.json | jq -r '.version')
           git add .
           git commit -m "Bump version to $version"
-          git push --follow-tags
           git push --force origin "$branch_name":dev
 
       - name: Delete versioned branch
