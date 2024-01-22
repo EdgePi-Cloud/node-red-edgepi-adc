@@ -14,10 +14,11 @@ module.exports = async function (RED) {
         node.on("input", async function (msg, send, done) {
           node.status({ fill: "green", shape: "dot", text: "input received" });
           try {
-            read = msg.readType || read; //prioritize the inputs in the msg
+            read = msg.readType || read;
             adcNum = msg.adc || adcNum;
             inputSelection = msg.payload || inputSelection;
             dataRate = msg.dataRate || dataRate;
+
             if (read !== "rtd") {
               await adc.setRtd(false, adcNum - 1);
             }
