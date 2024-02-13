@@ -1,0 +1,100 @@
+[
+    {
+        "id": "8cdbf6a7f8e518a8",
+        "type": "inject",
+        "z": "aa7eb918109cfafe",
+        "name": "",
+        "props": [
+            {
+                "p": "readType",
+                "v": "single",
+                "vt": "str"
+            },
+            {
+                "p": "adc",
+                "v": "2",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            },
+            {
+                "p": "dataRate",
+                "v": "800",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "3",
+        "payloadType": "num",
+        "x": 90,
+        "y": 180,
+        "wires": [
+            [
+                "3a5834a3ade508b4"
+            ]
+        ]
+    },
+    {
+        "id": "21a4336c1fe5f760",
+        "type": "debug",
+        "z": "aa7eb918109cfafe",
+        "name": "debug adc output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "3a5834a3ade508b4",
+        "type": "adc",
+        "z": "aa7eb918109cfafe",
+        "name": "",
+        "transport": "Local",
+        "tcpAddress": "192.168.1.193",
+        "tcpPort": "5555",
+        "read": "single",
+        "adcNum": "2",
+        "adc1DataRate": "20",
+        "adc2DataRate": "400",
+        "channel": "1",
+        "diff": "1",
+        "x": 350,
+        "y": 140,
+        "wires": [
+            [
+                "21a4336c1fe5f760"
+            ]
+        ]
+    },
+    {
+        "id": "47aa2fde183c88ce",
+        "type": "inject",
+        "z": "aa7eb918109cfafe",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "3a5834a3ade508b4"
+            ]
+        ]
+    }
+]
