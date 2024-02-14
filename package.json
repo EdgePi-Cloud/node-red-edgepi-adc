@@ -1,10 +1,13 @@
 {
     "name": "@edgepi-cloud/node-red-edgepi-adc",
     "node-red": {
-        "version": ">=3.0.0",
+        "version": ">=3.0.2",
         "nodes": {
             "edgepi-adc": "edgepi-adc.js"
         }
+    },
+    "engines": {
+        "node": ">=18.0.0"
     },
     "version": "1.0.13",
     "description": "node-red node for edgepi adc module utilizing remote procedure calls",
@@ -32,8 +35,5 @@
     },
     "dependencies": {
         "@edgepi-cloud/edgepi-rpc": "^1.1.3"
-    },
-    "engines": {
-        "node": ">=14.0.0"
     }
 }
