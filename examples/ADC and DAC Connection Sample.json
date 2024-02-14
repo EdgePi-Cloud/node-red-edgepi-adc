@@ -1,0 +1,161 @@
+[
+    {
+        "id": "32f9c9d6ad24f9e7",
+        "type": "inject",
+        "z": "1bda2585017050e3",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "readType",
+                "v": "single",
+                "vt": "str"
+            },
+            {
+                "p": "adc",
+                "v": "2",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 90,
+        "y": 440,
+        "wires": [
+            [
+                "a3d6633ce11741b6"
+            ]
+        ]
+    },
+    {
+        "id": "a3d6633ce11741b6",
+        "type": "adc",
+        "z": "1bda2585017050e3",
+        "name": "",
+        "transport": "Local",
+        "tcpAddress": "",
+        "tcpPort": "5555",
+        "read": "single",
+        "adcNum": 1,
+        "adc1DataRate": 38400,
+        "adc2DataRate": 800,
+        "channel": 1,
+        "diff": 1,
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "89e8145fe0d154c6"
+            ]
+        ]
+    },
+    {
+        "id": "3b0263e2ee1f5885",
+        "type": "dac",
+        "z": "1bda2585017050e3",
+        "name": "",
+        "transport": "Local",
+        "tcpAddress": "",
+        "tcpPort": "5555",
+        "voltage": "0",
+        "channel": 1,
+        "gain": false,
+        "x": 870,
+        "y": 440,
+        "wires": [
+            [
+                "f1e7b2467ab78e82"
+            ]
+        ]
+    },
+    {
+        "id": "89e8145fe0d154c6",
+        "type": "switch",
+        "z": "1bda2585017050e3",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "0.01",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 450,
+        "y": 440,
+        "wires": [
+            [
+                "c953a14dd3a31bde"
+            ]
+        ]
+    },
+    {
+        "id": "c953a14dd3a31bde",
+        "type": "change",
+        "z": "1bda2585017050e3",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "2",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "gain",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            },
+            {
+                "t": "set",
+                "p": "channel",
+                "pt": "msg",
+                "to": "7",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 440,
+        "wires": [
+            [
+                "3b0263e2ee1f5885"
+            ]
+        ]
+    },
+    {
+        "id": "f1e7b2467ab78e82",
+        "type": "debug",
+        "z": "1bda2585017050e3",
+        "name": "debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 440,
+        "wires": []
+    }
+]
